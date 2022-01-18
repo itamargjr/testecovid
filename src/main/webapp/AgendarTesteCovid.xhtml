@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      >
+
+<ui:composition template="/templates/_template.xhtml">  
+    <ui:define name="corpo">
+    
+    	<p:messages />
+			
+		<p:panel header="Preencha os dados abaixo para realizar o agendamento">
+
+    		<h:form id="formcadastro">
+    		
+    			<p:growl id="growl" showDetail="true" sticky="true" /> 
+    		
+    			<p:panel header="Dados Pessoais">
+    				<div class="ObjetosLinha">
+    					<div class="ObjetosColuna">
+      						<p:outputLabel value="CPF"/>
+      						<p:inputText onfocus="Cpf(this)" value="#{sau_testecovidBean.testecovid.cpf_testecovid}" styleClass="TamanhoM" required="true" requiredMessage="por favor informe o CPF"/>
+      					</div> 
+      				</div>
+					<div class="ObjetosLinha">
+						<div class="ObjetosColuna">
+							<p:outputLabel value="Data Nascimento" />
+							<p:inputText  onfocus="Data(this)" value="#{sau_testecovidBean.testecovid.nascimento_testecovid}" class="TamanhoMIN" required="true" requiredMessage="por favor informe a data de nascimento" />
+						</div>
+						<div class="ObjetosColuna">
+							<p:outputLabel value="Nome"/>
+      						<p:inputText onfocus="StringMaiuscula(this, -1)" value="#{sau_testecovidBean.testecovid.nome_testecovid}" styleClass="TamanhoM" required="true" requiredMessage="por favor informe o nome"/>
+      					</div>
+					</div>
+					<div class="ObjetosLinha">
+						<div class="ObjetosColuna">
+							<p:outputLabel value="Email"/>
+      						<p:inputText onfocus="StringMinuscula(this, -1)" value="#{sau_testecovidBean.testecovid.email_testecovid}" styleClass="TamanhoM" required="true" requiredMessage="por favor informe o email"/>
+      					</div>
+      				</div>
+					<div class="ObjetosLinha">
+						<div class="ObjetosColuna">
+							<p:outputLabel value="Local de Agendamento" />
+							<p:selectOneMenu value="#{sau_testecovidBean.testecovid.local_testecovid}" styleClass="TamanhoSelectM" required="true" requiredMessage="por favor informe o local de agendamento">
+								<f:selectItem itemValue="" itemLabel="" />
+								<f:selectItem itemValue="E M Jorge Deocleciano de Oliveira" itemLabel="E M Jorge Deocleciano de Oliveira" />
+								<f:selectItem itemValue="Ginásio do Parque de Eventos" itemLabel="Ginásio do Parque de Eventos" /> 								
+							</p:selectOneMenu>
+						</div>
+					</div>
+					<div class="ObjetosLinha">
+						<div class="ObjetosColuna">
+							<p:outputLabel value="Data" />
+							<p:inputText  onfocus="Data(this)" value="#{sau_testecovidBean.testecovid.data_testecovid}" class="TamanhoMIN" required="true" requiredMessage="por favor informe a data para agendamento" />
+						</div>
+						<div class="ObjetosColuna">
+							<p:outputLabel value="Hora" />
+							<p:inputText  onfocus="Tempo(this)" value="#{sau_testecovidBean.testecovid.hora_testecovid}" class="TamanhoMIN" required="true" requiredMessage="por favor informe a hora de agendamento" />
+						</div>
+					</div>
+				</p:panel>
+      			<p:panel header="Endereço">	
+					<div class="ObjetosColuna">
+    						<p:outputLabel value="CEP"/>
+	        			<p:inputText onfocus="Cep(this)" value="#{sau_testecovidBean.testecovid.cep_testecovid}" maxlength="11" styleClass="TextoCaixaAlta TamanhoMIN" required="true" requiredMessage="por favor informe o CEP"/>
+					</div>
+					<div class="ObjetosLinha">
+						<div class="ObjetosColuna">
+	  						<p:outputLabel value="Logradouro"/>
+	            			<p:inputText onfocus="StringMaiuscula(this, -1)" value="#{sau_testecovidBean.testecovid.logradouro_testecovid}" maxlength="30" styleClass="TextoCaixaAlta TamanhoG" required="true" requiredMessage="por favor informe o logradouro"/>
+      					</div>
+      				</div>
+     				<div class="ObjetosLinha">
+		      			<div class="ObjetosColuna">
+     						<p:outputLabel value="Número"/>
+		            		<p:inputText value="#{sau_testecovidBean.testecovid.numero_testecovid}" maxlength="5" styleClass="TextoCaixaAlta TamanhoMIN" required="true" requiredMessage="por favor informe o número"/>
+	      				</div>
+		      		
+	      				<div class="ObjetosColuna">
+	     					<p:outputLabel value="Complemento"/>
+		            		<p:inputText value="#{sau_testecovidBean.testecovid.complemento_testecovid}" maxlength="5" styleClass="TextoCaixaAlta TamanhoMIN"/>
+	      				</div>
+	      				<div class="ObjetosColuna">
+							<p:outputLabel value="Bairro" />
+							<p:selectOneMenu value="#{sau_testecovidBean.testecovid.bairro_testecovid}" styleClass="TamanhoSelectM" required="true" requiredMessage="por favor informe o bairro">
+								<f:selectItem itemValue="" itemLabel="" />
+								<f:selectItem itemValue="Bairro da Mina" itemLabel="Bairro da Mina" />
+								<f:selectItem itemValue="Cabral" itemLabel="Cabral" /> 
+								<f:selectItem itemValue="Cabuis" itemLabel="Cabuis" />
+								<f:selectItem itemValue="Centro" itemLabel="Centro" />
+								<f:selectItem itemValue="Frigorífico" itemLabel="Frigorífico" />
+								<f:selectItem itemValue="Manoel Reis" itemLabel="Manoel Reis" />
+								<f:selectItem itemValue="N. S. de Fátima" itemLabel="N. S. de Fátima" />
+								<f:selectItem itemValue="Nova Cidade" itemLabel="Nova Cidade" />
+								<f:selectItem itemValue="Novo Horizonte" itemLabel="Novo Horizonte" />
+								<f:selectItem itemValue="Olinda" itemLabel="Olinda" />
+								<f:selectItem itemValue="Paiol" itemLabel="Paiol" />
+								<f:selectItem itemValue="Santos Dumont" itemLabel="Santos Dumont" />
+								<f:selectItem itemValue="Tropical" itemLabel="Tropical" />
+								<f:selectItem itemValue="Outro" itemLabel="Outro Município" />								
+							</p:selectOneMenu>
+						</div>					
+	      			</div>	
+    			</p:panel>	
+    			 
+         		<br/>
+         			
+			     <p:commandButton styleClass="BotaoPrimario" action="#{sau_testecovidBean.GravarAgendamento()}" value="Concluir Agendamento" ajax="false" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />      			
+	
+      		</h:form>
+   	  </p:panel>
+
+    </ui:define>
+  </ui:composition>   
+</html>
+
+
