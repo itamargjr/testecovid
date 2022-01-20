@@ -22,7 +22,9 @@
     				<div class="ObjetosLinha">
     					<div class="ObjetosColuna">
       						<p:outputLabel value="CPF"/>
-      						<p:inputText onfocus="Cpf(this)" value="#{sau_testecovidBean.testecovid.cpf_testecovid}" styleClass="TamanhoM" required="true" requiredMessage="por favor informe o CPF"/>
+      						<p:inputText onfocus="Cpf(this)" value="#{sau_testecovidBean.testecovid.cpf_testecovid}" styleClass="TamanhoM" required="true" requiredMessage="por favor informe o CPF">
+      							<p:ajax listener="#{sau_testecovidBean.testaCPF()}" update=":formcadastro " />
+      						</p:inputText>
       					</div> 
       				</div>
 					<div class="ObjetosLinha">
@@ -41,26 +43,6 @@
       						<p:inputText onfocus="StringMinuscula(this, -1)" value="#{sau_testecovidBean.testecovid.email_testecovid}" styleClass="TamanhoM" required="true" requiredMessage="por favor informe o email"/>
       					</div>
       				</div>
-					<div class="ObjetosLinha">
-						<div class="ObjetosColuna">
-							<p:outputLabel value="Local de Agendamento" />
-							<p:selectOneMenu value="#{sau_testecovidBean.testecovid.local_testecovid}" styleClass="TamanhoSelectM" required="true" requiredMessage="por favor informe o local de agendamento">
-								<f:selectItem itemValue="" itemLabel="" />
-								<f:selectItem itemValue="E M Jorge Deocleciano de Oliveira" itemLabel="E M Jorge Deocleciano de Oliveira" />
-								<f:selectItem itemValue="Ginásio do Parque de Eventos" itemLabel="Ginásio do Parque de Eventos" /> 								
-							</p:selectOneMenu>
-						</div>
-					</div>
-					<div class="ObjetosLinha">
-						<div class="ObjetosColuna">
-							<p:outputLabel value="Data" />
-							<p:inputText  onfocus="Data(this)" value="#{sau_testecovidBean.testecovid.data_testecovid}" class="TamanhoMIN" required="true" requiredMessage="por favor informe a data para agendamento" />
-						</div>
-						<div class="ObjetosColuna">
-							<p:outputLabel value="Hora" />
-							<p:inputText  onfocus="Tempo(this)" value="#{sau_testecovidBean.testecovid.hora_testecovid}" class="TamanhoMIN" required="true" requiredMessage="por favor informe a hora de agendamento" />
-						</div>
-					</div>
 				</p:panel>
       			<p:panel header="Endereço">	
 					<div class="ObjetosColuna">
@@ -105,7 +87,46 @@
 						</div>					
 	      			</div>	
     			</p:panel>	
-    			 
+    			<p:panel header="Agendamento">
+    				<div class="ObjetosLinha">
+						<div class="ObjetosColuna">
+							<p:outputLabel value="Local de Agendamento" />
+							<p:selectOneMenu value="#{sau_testecovidBean.testecovid.local_testecovid}" styleClass="TamanhoSelectM" required="true" requiredMessage="por favor informe o local de agendamento">
+								<f:selectItem itemValue="" itemLabel="" />
+								<f:selectItem itemValue="E M Jorge Deocleciano de Oliveira" itemLabel="E M Jorge Deocleciano de Oliveira" />
+								<f:selectItem itemValue="Ginásio do Parque de Eventos" itemLabel="Ginásio do Parque de Eventos" /> 								
+							</p:selectOneMenu>
+						</div>
+					</div>
+    				<div class="ObjetosLinha">
+	      				<div class="ObjetosColuna">
+							<p:outputLabel value="Dia para realização do teste" />
+							<p:selectOneMenu value="#{sau_testecovidBean.testecovid.datarealizacao_testecovid}" styleClass="TamanhoM" required="true" requiredMessage="por favor informe o dia para realização do teste" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" >
+								<f:selectItem itemValue="" itemLabel=""/>
+								<f:selectItems value="#{sau_testecovidBean.diasmarcacao}" />									
+				
+							</p:selectOneMenu>
+						</div>
+						<div class="ObjetosColuna">
+							<p:outputLabel value="Horário desejado" />
+							<p:selectOneMenu value="#{sau_testecovidBean.testecovid.horanum_testecovid}" styleClass="TamanhoSelectM" required="true" requiredMessage="por favor informe o horário desejado">
+								<f:selectItem itemValue="9" itemLabel="9" />
+								<f:selectItem itemValue="10" itemLabel="10" />
+								<f:selectItem itemValue="11" itemLabel="11" />
+								<f:selectItem itemValue="13" itemLabel="13" />
+								<f:selectItem itemValue="14" itemLabel="14" />
+								<f:selectItem itemValue="15" itemLabel="15" />
+								<f:selectItem itemValue="16" itemLabel="16" /> 
+								
+								<p:ajax listener="#{sau_testecovidBean.filtrahorario()}" update="edthora" />								
+							</p:selectOneMenu>
+						</div>	
+						<div class="ObjetosColuna">
+							<p:outputLabel value="Hora disponível" />
+							<p:inputText id="edthora" onfocus="Tempo(this)" value="#{sau_testecovidBean.testecovid.hora_testecovid}" class="TamanhoMIN" readonly="true" required="true" requiredMessage="por favor informe a hora de agendamento" />
+						</div>					
+	      			</div>	
+    			</p:panel> 
          		<br/>
          			
 			     <p:commandButton styleClass="BotaoPrimario" action="#{sau_testecovidBean.GravarAgendamento()}" value="Concluir Agendamento" ajax="false" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />      			

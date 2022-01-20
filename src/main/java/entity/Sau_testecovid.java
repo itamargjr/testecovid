@@ -4,6 +4,7 @@ public class Sau_testecovid {
 	private Integer id_testecovid;
 	private String data_testecovid;
 	private String hora_testecovid;
+	private Integer horanum_testecovid;
 	private String local_testecovid;
 	private String cpf_testecovid;
 	private String nome_testecovid;
@@ -18,22 +19,23 @@ public class Sau_testecovid {
 	private String datarealizacao_testecovid;
 	private String horarealizacao_testecovid;
 	private String dataresultado_testecovid;
-	private String resultado_testecovid;
+	private String resultado_testecovid;	
 	
 	public Sau_testecovid() {
 		super();
 	}
 
 	public Sau_testecovid(Integer id_testecovid, String data_testecovid, String hora_testecovid,
-			String local_testecovid, String cpf_testecovid, String nome_testecovid, String nascimento_testecovid,
-			String email_testecovid, String cep_testecovid, String logradouro_testecovid, String numero_testecovid,
-			String complemento_testecovid, String bairro_testecovid, String tipo_testecovid,
+			Integer horanum_testecovid, String local_testecovid, String cpf_testecovid, String nome_testecovid,
+			String nascimento_testecovid, String email_testecovid, String cep_testecovid, String logradouro_testecovid,
+			String numero_testecovid, String complemento_testecovid, String bairro_testecovid, String tipo_testecovid,
 			String datarealizacao_testecovid, String horarealizacao_testecovid, String dataresultado_testecovid,
 			String resultado_testecovid) {
 		super();
 		this.id_testecovid = id_testecovid;
 		this.data_testecovid = data_testecovid;
 		this.hora_testecovid = hora_testecovid;
+		this.horanum_testecovid = horanum_testecovid;
 		this.local_testecovid = local_testecovid;
 		this.cpf_testecovid = cpf_testecovid;
 		this.nome_testecovid = nome_testecovid;
@@ -49,6 +51,14 @@ public class Sau_testecovid {
 		this.horarealizacao_testecovid = horarealizacao_testecovid;
 		this.dataresultado_testecovid = dataresultado_testecovid;
 		this.resultado_testecovid = resultado_testecovid;
+	}
+
+	public Integer getHoranum_testecovid() {
+		return horanum_testecovid;
+	}
+
+	public void setHoranum_testecovid(Integer horanum_testecovid) {
+		this.horanum_testecovid = horanum_testecovid;
 	}
 
 	public String getEmail_testecovid() {
@@ -198,14 +208,14 @@ public class Sau_testecovid {
 	@Override
 	public String toString() {
 		return "Sau_testecovid [id_testecovid=" + id_testecovid + ", data_testecovid=" + data_testecovid
-				+ ", hora_testecovid=" + hora_testecovid + ", local_testecovid=" + local_testecovid
-				+ ", cpf_testecovid=" + cpf_testecovid + ", nome_testecovid=" + nome_testecovid
-				+ ", nascimento_testecovid=" + nascimento_testecovid + ", email_testecovid=" + email_testecovid
-				+ ", cep_testecovid=" + cep_testecovid + ", logradouro_testecovid=" + logradouro_testecovid
-				+ ", numero_testecovid=" + numero_testecovid + ", complemento_testecovid=" + complemento_testecovid
-				+ ", bairro_testecovid=" + bairro_testecovid + ", tipo_testecovid=" + tipo_testecovid
-				+ ", datarealizacao_testecovid=" + datarealizacao_testecovid + ", horarealizacao_testecovid="
-				+ horarealizacao_testecovid + ", dataresultado_testecovid=" + dataresultado_testecovid
-				+ ", resultado_testecovid=" + resultado_testecovid + "]";
+				+ ", hora_testecovid=" + hora_testecovid + ", horanum_testecovid=" + horanum_testecovid
+				+ ", local_testecovid=" + local_testecovid + ", cpf_testecovid=" + cpf_testecovid + ", nome_testecovid="
+				+ nome_testecovid + ", nascimento_testecovid=" + nascimento_testecovid + ", email_testecovid="
+				+ email_testecovid + ", cep_testecovid=" + cep_testecovid + ", logradouro_testecovid="
+				+ logradouro_testecovid + ", numero_testecovid=" + numero_testecovid + ", complemento_testecovid="
+				+ complemento_testecovid + ", bairro_testecovid=" + bairro_testecovid + ", tipo_testecovid="
+				+ tipo_testecovid + ", datarealizacao_testecovid=" + datarealizacao_testecovid
+				+ ", horarealizacao_testecovid=" + horarealizacao_testecovid + ", dataresultado_testecovid="
+				+ dataresultado_testecovid + ", resultado_testecovid=" + resultado_testecovid + "]";
 	}
 }

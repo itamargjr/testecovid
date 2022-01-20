@@ -6,10 +6,14 @@ import java.net.URI;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.InputMismatchException;
+import java.util.Locale;
 import java.util.Random;
 
 import javax.faces.application.FacesMessage;
@@ -585,5 +589,11 @@ public class Biblioteca {
 	 		}
 		}
 		return (idade);			
+	}
+	
+	public static String getDayOfWeek(String data) {
+	    DateTimeFormatter parser = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+	    DayOfWeek dow = DayOfWeek.from(parser.parse(data));
+	    return dow.getDisplayName(TextStyle.SHORT, new Locale("pt", "BR")).toUpperCase();
 	}
 }
