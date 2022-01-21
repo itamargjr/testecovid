@@ -45,25 +45,27 @@
       				</div>
 				</p:panel>
       			<p:panel header="Endereço">	
-					<div class="ObjetosColuna">
+      				<div class="ObjetosLinha">
+						<div class="ObjetosColuna">
     						<p:outputLabel value="CEP"/>
-	        			<p:inputText onfocus="Cep(this)" value="#{sau_testecovidBean.testecovid.cep_testecovid}" maxlength="11" styleClass="TextoCaixaAlta TamanhoMIN" required="true" requiredMessage="por favor informe o CEP"/>
-					</div>
-					<div class="ObjetosLinha">
+	        				<p:inputText onfocus="Cep(this)" value="#{sau_testecovidBean.testecovid.cep_testecovid}" maxlength="11" styleClass="TextoCaixaAlta TamanhoMIN" required="true" requiredMessage="por favor informe o CEP">
+	        					<p:ajax listener="#{sau_testecovidBean.retornaLogrdoCEP()}" update="edtlogradouro" />
+	        				</p:inputText>
+						</div>					
 						<div class="ObjetosColuna">
 	  						<p:outputLabel value="Logradouro"/>
-	            			<p:inputText onfocus="StringMaiuscula(this, -1)" value="#{sau_testecovidBean.testecovid.logradouro_testecovid}" maxlength="30" styleClass="TextoCaixaAlta TamanhoG" required="true" requiredMessage="por favor informe o logradouro"/>
+	            			<p:inputText onfocus="StringMaiuscula(this, -1)" id="edtlogradouro" value="#{sau_testecovidBean.testecovid.logradouro_testecovid}" maxlength="30" styleClass="TextoCaixaAlta TamanhoG" required="true" requiredMessage="por favor informe o logradouro"/>
       					</div>
       				</div>
      				<div class="ObjetosLinha">
 		      			<div class="ObjetosColuna">
      						<p:outputLabel value="Número"/>
-		            		<p:inputText value="#{sau_testecovidBean.testecovid.numero_testecovid}" maxlength="5" styleClass="TextoCaixaAlta TamanhoMIN" required="true" requiredMessage="por favor informe o número"/>
+		            		<p:inputText value="#{sau_testecovidBean.testecovid.numero_testecovid}" maxlength="5" styleClass="TextoCaixaAlta TamanhoMIN" required="true" requiredMessage="por favor informe o número, ou S/N caso não tenha."/>
 	      				</div>
 		      		
 	      				<div class="ObjetosColuna">
 	     					<p:outputLabel value="Complemento"/>
-		            		<p:inputText value="#{sau_testecovidBean.testecovid.complemento_testecovid}" maxlength="5" styleClass="TextoCaixaAlta TamanhoMIN"/>
+		            		<p:inputText value="#{sau_testecovidBean.testecovid.complemento_testecovid}" maxlength="5" styleClass="TextoCaixaAlta TamanhoMIN" required="true" requiredMessage="por favor informe o complemento, ou S/C caso não tenha."/>
 	      				</div>
 	      				<div class="ObjetosColuna">
 							<p:outputLabel value="Bairro" />
@@ -101,15 +103,18 @@
     				<div class="ObjetosLinha">
 	      				<div class="ObjetosColuna">
 							<p:outputLabel value="Dia para realização do teste" />
-							<p:selectOneMenu value="#{sau_testecovidBean.testecovid.datarealizacao_testecovid}" styleClass="TamanhoM" required="true" requiredMessage="por favor informe o dia para realização do teste" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" >
+							<p:selectOneMenu value="#{sau_testecovidBean.testecovid.data_testecovid}" styleClass="TamanhoM" required="true" requiredMessage="por favor informe o dia para realização do teste" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" >
 								<f:selectItem itemValue="" itemLabel=""/>
 								<f:selectItems value="#{sau_testecovidBean.diasmarcacao}" />									
 				
 							</p:selectOneMenu>
 						</div>
+					</div>
+    				<div class="ObjetosLinha">
 						<div class="ObjetosColuna">
 							<p:outputLabel value="Horário desejado" />
 							<p:selectOneMenu value="#{sau_testecovidBean.testecovid.horanum_testecovid}" styleClass="TamanhoSelectM" required="true" requiredMessage="por favor informe o horário desejado">
+								<f:selectItem itemValue="" itemLabel="" />
 								<f:selectItem itemValue="9" itemLabel="9" />
 								<f:selectItem itemValue="10" itemLabel="10" />
 								<f:selectItem itemValue="11" itemLabel="11" />
@@ -132,7 +137,7 @@
 			     <p:commandButton styleClass="BotaoPrimario" action="#{sau_testecovidBean.GravarAgendamento()}" value="Concluir Agendamento" ajax="false" onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />      			
 	
       		</h:form>
-   	  </p:panel>
+   	  </p:panel> 
 
     </ui:define>
   </ui:composition>   

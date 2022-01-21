@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      >
+
+<ui:composition template="/templates/_template.xhtml">  
+    <ui:define name="corpo">
+    
+    	<p:messages />  	
+			
+		<p:panel header="Preencha os dados abaixo para filtrar">
+		
+			<h:form id="formpesquisa">
+				<div class="ObjetosLinha">
+					<div class="ObjetosColuna">
+						<p:outputLabel value="Local de Agendamento" />
+							<p:selectOneMenu value="#{sau_testecovidBean.testecovid.local_testecovid}" styleClass="TamanhoSelectM">
+								<f:selectItem itemValue="" itemLabel="" />
+								<f:selectItem itemValue="E M Jorge Deocleciano de Oliveira" itemLabel="E M Jorge Deocleciano de Oliveira" />
+								<f:selectItem itemValue="Ginásio do Parque de Eventos" itemLabel="Ginásio do Parque de Eventos" /> 								
+							</p:selectOneMenu>
+      				</div>
+      			</div>
+				<div class="ObjetosLinha">
+					<div class="ObjetosColuna">
+						<div class="ObjetosColuna">
+							<p:outputLabel value="Data Agendamento" />
+							<p:inputText  onfocus="Data(this)" value="#{sau_testecovidBean.testecovid.data_testecovid}" class="TamanhoMIN"/>
+						</div>
+					</div>
+				</div>
+				<div class="ObjetosLinha">
+					<div class="ObjetosColuna">
+						<p:outputLabel value="cpf"/>
+      					<p:inputText onfocus="Cpf(this)" value="#{sau_testecovidBean.testecovid.cpf_testecovid}" styleClass="TamanhoP" />
+      				</div>
+      			</div>
+      			
+      			<br/>
+         			
+		     	<p:commandButton styleClass="BotaoPrimario" 
+		     	                 action="#{sau_testecovidBean.buscaragendamentos()}" 
+		     	                 value="Buscar Agendamentos" ajax="false" 
+		     	                 update=":formpesquisa :formlista :formcadastro" 
+		     	                 onclick="PF('statusDialog').show()" 
+		     	                 onsuccess="PF('statusDialog').hide()" />
+      			 			
+			</h:form>
+		</p:panel>
+		
+		<br/>
+		
+		<h:form><h:commandLink value="Imprimir resultados" 
+		                       action="#{sau_testecovidBean.imprimelista()}" 
+		                       target="_blank" /></h:form>
+		
+		<br/>
+		<br/>
+		
+    	<h:form id="formlista">   	    		
+    	
+    		<p:panel rendered="#{sau_testecovidBean.testecovidlista.size() gt 0}">	
+
+    			<p:dataTable value="#{sau_testecovidBean.testecovidlista}" var="agend" id="dataTableDetalhe" rows="20" paginator="true" 
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}{RowsPerPageDropdown}"
+                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                 rowsPerPageTemplate="5,10,15">
+
+					<p:column headerText="Local" sortBy="#{agend.local_testecovid}">
+						<p:outputLabel value="#{agend.local_testecovid}"/>
+					</p:column>
+					
+					<p:column headerText="Data" sortBy="#{agend.data_testecovid}">
+						<p:outputLabel value="#{agend.data_testecovid}"/>
+					</p:column>
+					
+					<p:column headerText="Hora" sortBy="#{agend.hora_testecovid}">
+						<p:outputLabel value="#{agend.hora_testecovid}"/>
+					</p:column>
+					
+					<p:column headerText="Nome" sortBy="#{agend.nome_testecovid}">
+						<p:commandLink value="#{agend.nome_testecovid}" action="#{sau_testecovidBean.mostradialogoagendamento()}" update=":formcadastro">
+							<f:setPropertyActionListener value="#{agend}" target="#{sau_testecovidBean.testecovid}" />
+							<p:ajax event="dialogReturn" update=":formcadastro" /> 
+						</p:commandLink>
+					</p:column>
+						
+					<p:column headerText="Nascimento">
+						<p:outputLabel value="#{agend.nascimento_testecovid}"/>
+					</p:column>
+					
+					<p:column headerText="Email">
+						<p:outputLabel value="#{agend.email_testecovid}"/>
+					</p:column>
+					
+					<p:column headerText="Bairro">
+						<p:outputLabel value="#{agend.bairro_testecovid}"/>
+					</p:column>
+				</p:dataTable>
+			</p:panel>	
+      	</h:form>
+   	  	
+   	  	<p:dialog widgetVar="Dialogo" modal="true" header="Consulta de Agendamento"> 
+   	  		<h:form id="formcadastro">
+   	  		<p:tabView>
+		        <p:tab title="Dados Pessoais">
+		            <div class="ObjetosLinha">
+						<div class="ObjetosColuna">
+							<p:outputLabel value="Nascimento" />
+							<p:inputText  onfocus="Data(this)" value="#{sau_testecovidBean.testecovid.nascimento_testecovid}" class="TamanhoMIN" disabled="true"/>								
+						</div>
+						<div class="ObjetosColuna">
+							<p:outputLabel value="Nome do Candidato"/>
+      						<p:inputText onfocus="StringMaiuscula(this, -1)" value="#{sau_testecovidBean.testecovid.nome_testecovid}" styleClass="TamanhoM" disabled="true"/>
+      					</div>        					
+						<div class="ObjetosColuna">
+							<p:outputLabel value="Bairro Candidato" />
+							<p:inputText onfocus="StringMaiuscula(this, -1)" value="#{sau_testecovidBean.testecovid.bairro_testecovid}" styleClass="TamanhoP" disabled="true"/>
+						</div>
+					</div>
+					<div class="ObjetosLinha">  	
+      					<div class="ObjetosColuna">
+							<p:outputLabel value="Email"/>
+      						<p:inputText value="#{sau_testecovidBean.testecovid.email_testecovid}" styleClass="TamanhoG" disabled="true"/>
+      					</div> 
+      					<div class="ObjetosColuna">
+							<p:outputLabel value="Cpf"/>
+      						<p:inputText value="#{sau_testecovidBean.testecovid.cpf_testecovid}" styleClass="TamanhoG" disabled="true"/>
+      					</div> 
+      				</div> 
+		        </p:tab>
+		        <p:tab title="Endereço">
+		            <div class="ObjetosLinha">
+						<div class="ObjetosColuna">
+	  						<p:outputLabel value="Logradouro"/>
+	            			<p:inputText onfocus="StringMaiuscula(this, -1)" value="#{sau_testecovidBean.testecovid.logradouro_testecovid}" maxlength="30" styleClass="TextoCaixaAlta TamanhoG" disabled="true"/>
+      					</div>
+      				</div>
+     				<div class="ObjetosLinha">
+		      			<div class="ObjetosColuna">
+     						<p:outputLabel value="Número"/>
+		            		<p:inputText value="#{sau_testecovidBean.testecovid.numero_testecovid}" maxlength="5" styleClass="TextoCaixaAlta TamanhoMIN" disabled="true"/>
+	      				</div>
+		      		
+	      				<div class="ObjetosColuna">
+	     					<p:outputLabel value="Compl"/>
+		            		<p:inputText value="#{sau_testecovidBean.testecovid.complemento_testecovid}" maxlength="5" styleClass="TextoCaixaAlta TamanhoMIN" disabled="true"/>
+	      				</div>
+	      				<div class="ObjetosColuna">
+							<p:outputLabel value="Bairro" />
+							<p:inputText value="#{sau_testecovidBean.testecovid.bairro_testecovid}" styleClass="TamanhoM" disabled="true"/>							
+						</div>
+						<div class="ObjetosColuna">
+     						<p:outputLabel value="CEP"/>
+		        			<p:inputText onfocus="Cep(this)" value="#{sau_testecovidBean.testecovid.cep_testecovid}" maxlength="11" styleClass="TextoCaixaAlta TamanhoMIN" disabled="true"/>
+						</div>					
+	      			</div>	
+		        </p:tab>
+		    </p:tabView>
+   	  		</h:form>
+   	  	</p:dialog>	
+
+    </ui:define>
+  </ui:composition>   
+</html>
+
+

@@ -10,12 +10,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.shaded.json.JSONObject;
 
-import entity.Edu_escolas_modensinovagas;
 import entity.Sau_testecovid;
-import persistence.Edu_escolas_modensinoanosDao;
-import persistence.Edu_escolas_modensinovagasDao;
 import persistence.Sau_testecovidDao;
 import util.Biblioteca;
 import util.CepUtil;
@@ -45,8 +43,12 @@ public class Sau_testecovidBean {
 		
 		for (int i = 1; i < 10; i++) {
 			data = data.plusDays(1);
-			
-			diasmarcacao.add(data.format(formatter));
+	
+			if ((!Biblioteca.getDayOfWeek(data.format(formatter)).equalsIgnoreCase("SÁB."))&&(!Biblioteca.getDayOfWeek(data.format(formatter)).equalsIgnoreCase("DOM."))) {
+				diasmarcacao.add(data.format(formatter));
+				
+				//System.out.println(Biblioteca.getDayOfWeek(data.format(formatter)));
+			}					
 		}
 		
 	}
@@ -84,7 +86,28 @@ public class Sau_testecovidBean {
 	}
 	
 	public void GravarAgendamento() {
-		
+		try {	
+							
+			Sau_testecovidDao sd = new Sau_testecovidDao();
+			
+			Boolean AgendamentoJaExiste = sd.AgendamentoJaExiste(testecovid);
+			
+			if (AgendamentoJaExiste) {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Este agendamento já foi realizado", "")); 
+			} else {
+												
+				sd.gravar(testecovid);
+				
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Seu agendamento foi realizado com sucesso!\n " +
+				                                                                                                "Confira o comprovante no seu email, ele deve ser levado no local da vacina.", ""));	
+					
+				testecovid = new Sau_testecovid();				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "")); 
+		}
 	}
 	
 	public void testaCPF() {		
@@ -109,9 +132,34 @@ public class Sau_testecovidBean {
 			
 			Sau_testecovidDao sd = new Sau_testecovidDao();
 			
-			Integer agendados = sd.retornaDisponibilidade(testecovid.getData_testecovid(), testecovid.getHoranum_testecovid());
+			Integer agendados = sd.retornaDisponibilidade(testecovid);
 			
-			
+			if (agendados >= 239) {
+				testecovid.setHora_testecovid(null);
+				
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Não há vagas para este horário", ""));
+			} else {
+				
+				String hora;				
+				Integer valortruncado;
+				
+				valortruncado = Math.floorDiv(agendados, 4);
+				
+				if (valortruncado<10) {
+					hora = ":0" + valortruncado;
+				} else {
+					hora = ":" + valortruncado;
+				} 
+				
+				if (testecovid.getHoranum_testecovid()<10) {
+					hora = "0" + testecovid.getHoranum_testecovid() + hora;
+				} else {
+					hora = testecovid.getHoranum_testecovid() + hora;
+				} 
+				
+				testecovid.setHora_testecovid(hora);
+
+			}						
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,6 +167,24 @@ public class Sau_testecovidBean {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
 		}
 		
+	}
+	
+	public void mostradialogoagendamento() {
+		PrimeFaces.current().executeScript("PF('Dialogo').show();");
+	}
+	
+	public void buscaragendamentos() {
+		try {
+			
+			Sau_testecovidDao sd = new Sau_testecovidDao();
+			
+			testecovidlista = sd.findAll(testecovid);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
+		}
 	}
 
 }

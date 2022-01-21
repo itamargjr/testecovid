@@ -39,7 +39,7 @@ public class Autorizador implements PhaseListener{
 		
 		if ("/index.xhtml".equals(context.getViewRoot().getViewId())) {
 			return;
-		} else if ("/AgendarTesteCovid.xhtml".equals(context.getViewRoot().getViewId())) {
+		} else if ("/Agendar.xhtml".equals(context.getViewRoot().getViewId())) {
 			return;			
 		}
 		

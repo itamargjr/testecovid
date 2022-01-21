@@ -13,10 +13,11 @@
                     <h:form>
                         <p:panelMenu class="AjusteMenuPrincipal"  stateful="false">
 	                        <p:submenu label="Principal" expanded="true">	                                 
-	                                <p:menuitem onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" value="Teste de COVID - Agendamento" url="AgendarTesteCovid.xhtml" />                       
+	                        	<p:menuitem onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" value="Teste de COVID - Agendamento" url="Agendar.xhtml" />
+	                            <p:menuitem onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" value="Consultar Agendamentos" url="ConsultarAgendamentos.xhtml" />                       
 	                        </p:submenu>
 	                        <p:submenu label="Opções" expanded="true">
-			                        <p:menuitem  onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" value="Sair" action="#{acessoBean.logout}" />
+			                    <p:menuitem  onclick="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" value="Sair" action="#{acessoBean.logout}" />
 			    			</p:submenu>
                         </p:panelMenu>           
                     </h:form>
