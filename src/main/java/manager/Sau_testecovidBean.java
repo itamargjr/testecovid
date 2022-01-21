@@ -1,5 +1,6 @@
 package manager;
 
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,9 +15,12 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.shaded.json.JSONObject;
 
 import entity.Sau_testecovid;
+import net.sf.jasperreports.engine.JasperRunManager;
 import persistence.Sau_testecovidDao;
+import report.DSReportTesteCovid;
 import util.Biblioteca;
 import util.CepUtil;
+import util.SendMail;
 
 @ManagedBean
 @ViewScoped
@@ -134,7 +138,7 @@ public class Sau_testecovidBean {
 			
 			Integer agendados = sd.retornaDisponibilidade(testecovid);
 			
-			if (agendados >= 239) {
+			if (agendados >= 23) {
 				testecovid.setHora_testecovid(null);
 				
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Não há vagas para este horário", ""));
@@ -145,11 +149,7 @@ public class Sau_testecovidBean {
 				
 				valortruncado = Math.floorDiv(agendados, 4);
 				
-				if (valortruncado<10) {
-					hora = ":0" + valortruncado;
-				} else {
-					hora = ":" + valortruncado;
-				} 
+				hora = ":" + valortruncado + "0";		 
 				
 				if (testecovid.getHoranum_testecovid()<10) {
 					hora = "0" + testecovid.getHoranum_testecovid() + hora;
@@ -184,6 +184,66 @@ public class Sau_testecovidBean {
 			e.printStackTrace();
 			
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
+		}
+	}
+	
+
+	public void enviaremailAgendamento(){
+		
+		if ((testecovid.getCpf_testecovid()==null)||(testecovid.getCpf_testecovid().equalsIgnoreCase(""))) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nenhum agendamento encontrado para enviar email", ""));
+		} else {
+			FacesContext fc = FacesContext.getCurrentInstance();
+			
+			try{		
+				
+				testecovidlista = new Sau_testecovidDao().findAll(testecovid);
+
+				DSReportTesteCovid ds = new DSReportTesteCovid(testecovidlista);
+				
+				InputStream arquivo = FacesContext.getCurrentInstance()
+					.getExternalContext().getResourceAsStream("/testecovid.jasper");	
+
+				byte[] pdf = JasperRunManager.runReportToPdf(arquivo, null, ds);
+					
+				String dest = testecovid.getEmail_testecovid();
+
+				SendMail sm = new SendMail();
+				
+				String dadosemailhtml = "<br /> <strong>TESTE COVID NILÓPOLIS 2022 - AGENDAMENTO <label>" +
+		           		 "</label> </strong><br /> <br />" +
+		           		 "<br /> Esta é uma confirmação da seu AGENDAMENTO<br />" +
+		           		 "<hr />" +
+		           		 "<br /><br />Nome              : " + testecovid.getNome_testecovid() +
+		           		 "<br /><br />Data de Nascimento: " + testecovid.getNascimento_testecovid() +
+		           		 "<br /><br />Bairro            : " + testecovid.getBairro_testecovid() +
+		           		 "<br /><br />" + 
+		           		 "<br /><br />Local             : " + testecovid.getLocal_testecovid() +
+		           		 "<br /><br />" + 		           		 
+		           		 "<br /><br />Data              : " + testecovid.getData_testecovid() +		           		 		           		
+		           		 "<br /><br />Hora              : " + testecovid.getHora_testecovid() +
+		           		 "<br /><br />" + 
+		           		 "Você realizou o agendamento para realização de teste COVID19 " +
+		           		 "<br />" +
+		           		 "Você receberá o resultado no mesmo endereço eletrônico." +
+		           		 "<br />" +
+		           		 "<div style='border:none;border-bottom:solid windowtext 1.0pt;padding:0cm 0cm 1.0pt 0cm'>" +
+		           		 
+		           		 "<table align='center'><tr>"+
+		           		 "<td align='center'><img src='https://nilopolisdigital.com/imagens/logomatricula2022.jpg' alt='Matrículas On Line 2022' /><br /><br />"+
+		           		 "<strong>Secretaria de Súde, Sistema de Agendamento 2022 - Prefeitura Municipal de Nilópolis</strong>"+
+		           		 "</td></tr></table>";
+	
+				String[] to = {dest}; 
+
+							
+				sm.sendMailAttachment("inscricaoeducacaonilopolis@gmail.com", to, "AGENDAMENTO - TESTE COVID NILÓPOLIS 2022", dadosemailhtml, pdf);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));	
+			}
 		}
 	}
 
